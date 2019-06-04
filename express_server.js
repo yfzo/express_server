@@ -1,4 +1,5 @@
 var express = require("express");
+var crypto = require("crypto");
 var app = express();
 var PORT = 8080; // default port 8080
 
@@ -39,8 +40,12 @@ app.get("/hello", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  //console.log(req.body);  // Log the POST request body to the console
+  const randomString = generateRandomString();
+
+  urlDatabase[randomString] = req.body.longURL;
+
+  res.redirect(`/urls/${randomString}`);         // Respond with 'Ok' (we will replace this)
 });
 
 app.listen(PORT, () => {
@@ -48,7 +53,7 @@ app.listen(PORT, () => {
 });
 
 function generateRandomString() {
-  return Math.random().toString(36).substr(2, 6);
+  return crypto.randomBytes(3).toString('hex');
 }
 
 //console.log(generateRandomString());
