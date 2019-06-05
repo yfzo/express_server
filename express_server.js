@@ -53,6 +53,12 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${randomString}`);         // Respond with 'Ok' (we will replace this)
 });
 
+app.post("/urls/:shortURL", (req, res) => {
+  const { shortURL, longURL } = req.body;
+
+  urlDatabase[shortURL] = longURL;
+})
+
 app.post("/urls/:shortURL/delete", (req, res) => {
   const { shortURL } = req.body;
 

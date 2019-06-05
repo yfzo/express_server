@@ -19,11 +19,14 @@
 
     <ul>
       <% for (url in urls) { %>
-        <li><%= url %> : <%= urls[url] %></li>
-        <form method="POST" action="/urls/9sm5xK/delete">
-          <input type="hidden" name="shortURL" value="<%= url %>">
-          <input type="submit" value="Delete">
-        </form>
+        <li><%= url %> : <%= urls[url] %>
+          <a href="/urls/new">Edit</a>
+          <form method="POST" action="/urls/<%= url %>/delete">
+            <input type="hidden" name="shortURL" value="<%= url %>">
+
+            <button type="submit">Delete</button>
+          </form>
+        </li>
       <% } %>
     </ul>
 
