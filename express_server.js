@@ -46,7 +46,6 @@ app.get("/hello", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  //console.log(req.body);  // Log the POST request body to the console
   const randomString = generateRandomString();
 
   urlDatabase[randomString] = req.body.longURL;
@@ -62,4 +61,3 @@ function generateRandomString() {
   return crypto.randomBytes(3).toString('hex');
 }
 
-//console.log(generateRandomString());
