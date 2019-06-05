@@ -1,5 +1,6 @@
 var express = require("express");
 var crypto = require("crypto");
+var cookieParser = require("cookie-parser");
 var app = express();
 var PORT = 8080; // default port 8080
 
@@ -66,6 +67,12 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 
   res.redirect("/urls");
 });
+
+app.post("/login", (req, res) => {
+  res.cookie(username, req.body.username);
+
+  res.redirect("/urls");
+})
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
