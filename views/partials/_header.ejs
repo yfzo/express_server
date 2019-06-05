@@ -3,13 +3,20 @@
     <header>
       <h1>TinyApp</h1>
 
-      <form method="POST" action="/login">
-        <label for="username">
+      <% if (!!username) {%>
+        <form method="POST" action="/logout">
           <%= username %>
-        </label>
-        <input id="username" type="text" name="username">
+          <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+      <% } else { %>
+        <form method="POST" action="/login">
+          <label for="username">
+            Username
+          </label>
+          <input id="username" type="text" name="username">
 
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+      <% } %>
     </header>
   </html>
