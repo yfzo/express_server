@@ -2,16 +2,20 @@
   "name": "tiny-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "express_server.js",
   "scripts": {
+    "start": "./node_modules/.bin/nodemon -L express_server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Yifei Zhou - yifeizhou.to@gmail.com",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "crypto": "^1.0.1",
     "ejs": "^2.6.1",
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
   }
 }
