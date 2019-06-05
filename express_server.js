@@ -53,6 +53,14 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${randomString}`);         // Respond with 'Ok' (we will replace this)
 });
 
+app.post("/urls/:shortURL/delete", (req, res) => {
+  const { shortURL } = req.body;
+
+  delete urlDatabase[shortURL];
+
+  res.redirect("/urls");
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
