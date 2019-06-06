@@ -113,15 +113,18 @@ app.post("/urls", (req, res) => {
 app.post("/urls/:shortURL", (req, res) => {
   const { shortURL, longURL } = req.body;
 
-  urlDatabase[shortURL].longURL = longURL;
+  if (req.cookies["user_id"] == urlDatabase[shortURL].userID) {
+    urlDatabase[shortURL].longURL = longURL;
+  }
 })
 
 app.post("/urls/:shortURL/delete", (req, res) => {
   const { shortURL } = req.body;
 
-  delete urlDatabase[shortURL];
-
-  res.redirect("/urls");
+  if (req.cookies["user_id"] == urlDatabase[shortURL].userID) {
+    delete urlDatabase[shortURL];
+    res.redirect("/urls");
+  }
 });
 
 app.post("/login", (req, res) => {
