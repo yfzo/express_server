@@ -5,13 +5,18 @@
 
       <% if (user) {%>
         <form method="POST" action="/logout">
-          <%= user.email %>
-          <button type="submit" class="btn btn-primary">Logout</button>
+          <p>
+            <a href="/urls/new">Create new TinyURL</a> |
+            <a href="/urls">See URLs</a>
+          </p>
+          <p>
+            <%= user.email %>
+            <button type="submit" class="btn btn-primary">Logout</button>
+          </p>
         </form>
 
       <% } else { %>
-        <a href="/register">Register</a>
-        <a href="/login">Login</a>
+        <a href="/login">Login</a> | <a href="/register">Register</a>
       <% } %>
     </header>
   </html>
