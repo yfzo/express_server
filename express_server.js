@@ -57,7 +57,7 @@ app.get("/urls/new", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   let user_id = req.cookies["user_id"]
   if (user_id) {
-    if(user_id == urlDatabase[req.params.shortURL].userID) {
+    if(user_id === urlDatabase[req.params.shortURL].userID) {
       let templateVars = {
         shortURL: req.params.shortURL,
         longURL: urlDatabase[req.params.shortURL].longURL,
@@ -74,7 +74,8 @@ app.get("/urls/:shortURL", (req, res) => {
 })
 
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
+  let shortURL = req.params.shortURL;
+  let longURL = urlDatabase[shortURL].longURL;
 
   res.redirect(longURL);
 });
