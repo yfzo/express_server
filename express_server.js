@@ -64,6 +64,14 @@ app.get("/register", (req, res) => {
   res.render("urls_register", templateVars);
 })
 
+app.get("/login", (req, res) => {
+  let templateVars = {
+    user: users[req.cookies["user_id"]]
+  };
+
+  res.render("urls_login", templateVars);
+})
+
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
@@ -93,13 +101,16 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 app.post("/login", (req, res) => {
   let user = users[findUser(req.body.email)];
 
-  console.log(req.body);
-
   if (user) {
-    res.cookie("user_id", user.user_id);
-    res.redirect("/urls");
+    if (req.body.password == user.password){
+      res.cookie("user_id", user.user_id);
+      res.redirect("/urls");
+    } else {
+      res.status(403).send('Password incorrect');
+    }
   } else {
-    res.redirect("/register");
+    //res.redirect("/register");
+    res.status(403).send('User not found');
   }
 })
 
@@ -114,7 +125,7 @@ app.post('/register', (req, res) => {
 
   if (!email || !password) {
     res.status(400).send('Missing email or password');
-  } else if (emailExists(email)) {
+  } else if (findUser(email)) {
     res.status(400).send('Email already used');
   } else {
     users[user_id] = {
@@ -124,7 +135,7 @@ app.post('/register', (req, res) => {
     };
 
     res.cookie("user_id", user_id);
-    console.log(users);
+
     res.redirect('/urls');
   }
 })
@@ -135,16 +146,6 @@ app.listen(PORT, () => {
 
 function generateRandomString() {
   return crypto.randomBytes(3).toString('hex');
-}
-
-function emailExists(email) {
-  for (user in users) {
-    if (users[user].email == email) {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 function findUser(email) {
