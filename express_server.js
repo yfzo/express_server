@@ -27,7 +27,7 @@ app.get("/urls.json", (req, res) => {
 app.get("/urls", (req, res) => {
   let templateVars = {
     urls: urlDatabase,
-    username: req.cookies["username"]
+    user: users[req.cookies["user_id"]]
   };
 
   res.render("urls_index", templateVars);
@@ -35,7 +35,7 @@ app.get("/urls", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   let templateVars = {
-    username: req.cookies["username"]
+    user: users[req.cookies["user_id"]]
   };
 
   res.render("urls_new", templateVars);
@@ -45,7 +45,7 @@ app.get("/urls/:shortURL", (req, res) => {
   let templateVars = {
     shortURL: req.params.shortURL,
     longURL: urlDatabase[req.params.shortURL],
-    username: req.cookies["username"]
+    user: users[req.cookies["user_id"]]
   };
   res.render("urls_show", templateVars);
 })
@@ -58,7 +58,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 app.get("/register", (req, res) => {
   let templateVars = {
-    username: req.cookies["username"]
+    user: users[req.cookies["user_id"]]
   };
 
   res.render("urls_register", templateVars);
@@ -91,32 +91,39 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  res.cookie("username", req.body.username);
+  let user = users[findUser(req.body.email)];
 
-  res.redirect("/urls");
+  console.log(req.body);
+
+  if (user) {
+    res.cookie("user_id", user.user_id);
+    res.redirect("/urls");
+  } else {
+    res.redirect("/register");
+  }
 })
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('user_id');
   res.redirect('/urls');
 })
 
 app.post('/register', (req, res) => {
   let { email, password } = req.body;
-  let id = generateRandomString();
+  let user_id = generateRandomString();
 
   if (!email || !password) {
     res.status(400).send('Missing email or password');
   } else if (emailExists(email)) {
     res.status(400).send('Email already used');
   } else {
-    users[id] = {
-      id,
+    users[user_id] = {
+      user_id,
       email,
       password
     };
 
-    res.cookie("user_id", id);
+    res.cookie("user_id", user_id);
     console.log(users);
     res.redirect('/urls');
   }
@@ -138,5 +145,13 @@ function emailExists(email) {
   }
 
   return false;
+}
+
+function findUser(email) {
+  for (user in users) {
+    if(users[user].email == email) {
+      return user;
+    }
+  }
 }
 
