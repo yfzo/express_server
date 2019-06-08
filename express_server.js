@@ -10,9 +10,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSession({
   name: 'user_id',
   secret: 'i want to play the basketball arcade game',
-
-  // Cookie Options
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
 app.set('view engine', 'ejs');
